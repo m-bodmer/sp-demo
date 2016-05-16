@@ -3,33 +3,33 @@ Open index.html in browser
 
 Nginx server block example
 ```
-server {
-  listen       443 http2 ssl;
-  server_name  h2demo;
-  tcp_nodelay     on;
-  tcp_nopush      off;
+location ~ /demonopush/? {
+        root /var/http2demo/;
+        index index.html;
+        delay 200ms;
+}
 
-  http2_server_push on;
-  http2_max_push_per_stream     200;
-  http2_max_push_per_connection 20000;
-
-  location /demov2push/ {
-    location ~* \.(png|js|css)$ {
-      root   /var/h2demo/;
-      index  index.html;
+location ~ /demopush/? {
+    location  ~* \.(png|js|css)$ {
+        root   /var/http2demo/;
+        index  index.html;
     }
 
-    location ~* / {
-      root /var/h2demo/;
-      index index.html;
+    location  ~* / {
+        root /var/http2demo/;
+        index index.html;
+        delay 200ms;
 
-      if ($request_uri = /demov2push/index.html) {
-        add_header link "</demov2push/js/jquery2-2.2.3.min.js>; rel=preload;";
-        add_header link "</demov2push/js/bootstrap2.js>; rel=preload;";
-        add_header link "</demov2push/css/bootstrap2.css>; rel=preload;";
-        add_header link "</demov2push/images/placeholder2.png>; rel=preload;";
-      }
+         if ($request_uri = /demopush/) {
+            add_header link "</demopush/about.html>; rel=preload;";
+            add_header link "</demopush/js/jquery2-2.2.3.min.js>; rel=preload;";
+            add_header link "</demopush/js/bootstrap2.js>; rel=preload;";
+            add_header link "</demopush/css/bootstrap2.css>; rel=preload;";
+            add_header link "</demopush/images/placeholder.png>; rel=preload;";
+            add_header link "</demopush/images/placeholder2.png>; rel=preload;";
+            add_header link "</demopush/images/placeholder3.png>; rel=preload;";
+            add_header link "</demopush/images/placeholder4.png>; rel=preload;";
+         }
     }
-  }
 }
 ```
